@@ -6,7 +6,7 @@ fileList = []
 if len(sys.argv)>=2:
 	inpath=str(sys.argv[1])
 
-def crawl_dir_get_list(inpath):
+def crawl_dir_get_list(inpath):#recurse subfolders and get all file names
 	filepath_list=[]
 	for (path,dirs,files) in os.walk(inpath):
 		for item in files:
@@ -15,9 +15,18 @@ def crawl_dir_get_list(inpath):
 				filepath_list.append(filepath)
 	return sorted(filepath_list)
 
+def dir_get_list(inpath):#only return file names that are loose in the inpath
+	filepath_list=[]
+	files = os.listdir(inpath)
+	for item in files:
+		filepath=inpath+os.path.sep+item
+		if filepath not in filepath_list:
+			filepath_list.append(filepath)
+	return sorted(filepath_list)
+
 if inpath:
 	print(inpath)
-	fileList = crawl_dir_get_list(inpath)
+	fileList = dir_get_list(inpath)
 
 if fileList:
 	for item in fileList:
