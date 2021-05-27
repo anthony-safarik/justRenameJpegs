@@ -1,10 +1,5 @@
-import os, sys, shutil
-
-inpath = ""
-fileList = []
-
-if len(sys.argv)>=2:
-	inpath=str(sys.argv[1])
+import os, shutil, sys
+from directoryDialog import folder_picker as fp
 
 def crawl_dir_get_list(inpath):#recurse subfolders and get all file names
 	filepath_list=[]
@@ -15,28 +10,31 @@ def crawl_dir_get_list(inpath):#recurse subfolders and get all file names
 				filepath_list.append(filepath)
 	return sorted(filepath_list)
 
-def dir_get_list(inpath):#only return file names that are loose in the inpath
-	filepath_list=[]
-	files = os.listdir(inpath)
-	for item in files:
-		filepath=inpath+os.path.sep+item
-		if filepath not in filepath_list:
-			filepath_list.append(filepath)
-	return sorted(filepath_list)
+def rename(inpath):
+    fileList = crawl_dir_get_list(inpath)
+    for item in fileList:
+    	if item.lower().endswith('.jpg'):
+    		itemSplit = item.split()
+    		itemSplitLength = len(itemSplit)
+    		if itemSplitLength > 1:
+    			newName = itemSplit[1]
+    			if not newName.lower().endswith('.jpg'):
+    				newName = newName+'.jpg'
+    			target = inpath+'/'+newName
+    			shutil.copyfile(item,target)
 
-if inpath:
-	print(inpath)
-	fileList = dir_get_list(inpath)
+def main_rename():
+	#opens folder picker
+    fpath = fp()
+    rename(fpath)
 
-if fileList:
-	for item in fileList:
-		if item.lower().endswith('.jpg'):
-			itemSplit = item.split()
-			itemSplitLength = len(itemSplit)
-			if itemSplitLength > 1:
-				print(itemSplit[1])
-				newName = itemSplit[1]
-				if not newName.lower().endswith('.jpg'):
-					newName = newName+'.jpg'
-				target = inpath+'/'+newName
-				shutil.copyfile(item,target)
+def argv_rename(inpath):
+	#checks first argument from the command line
+	if os.path.isdir(inpath):
+		rename(inpath)
+
+if __name__ == '__main__':
+	if len(sys.argv)>=2:
+		argv_rename(str(sys.argv[1]))#try to pass first argument to argv_rename
+	else:
+		main_rename()#open up the folder picker
