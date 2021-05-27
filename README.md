@@ -1,6 +1,8 @@
 # justRenameJpegs
 Removes gack from Jpeg file names. Used after exporting markers, using comments from Avid.
 
+fake-jpegs.zip is for testing the app
+
 a stand-alone MacOS app has been built for this using py2app
 
 $ pip install -U py2app
