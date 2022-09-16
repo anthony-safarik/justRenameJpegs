@@ -1,5 +1,4 @@
 import os, shutil, sys
-from directoryDialog import folder_picker as fp
 
 def crawl_dir_get_list(inpath):#recurse subfolders and get all file names
 	filepath_list=[]
@@ -23,11 +22,6 @@ def rename(inpath):
     			target = inpath+'/'+newName
     			shutil.copyfile(item,target)
 
-def main_rename():
-	#opens folder picker
-    fpath = fp()
-    rename(fpath)
-
 def argv_rename(inpath):
 	#checks first argument from the command line
 	if os.path.isdir(inpath):
@@ -37,4 +31,4 @@ if __name__ == '__main__':
 	if len(sys.argv)>=2:
 		argv_rename(str(sys.argv[1]))#try to pass first argument to argv_rename
 	else:
-		main_rename()#open up the folder picker
+		print("Sample Usage: python justRenameJpegs.py /Users/path/to/jpegs")
