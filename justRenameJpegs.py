@@ -20,7 +20,8 @@ def rename(inpath):
     			if not newName.lower().endswith('.jpg'):
     				newName = newName+'.jpg'
     			target = inpath+'/'+newName
-    			shutil.copyfile(item,target)
+    			os.rename(item,target)
+			
 
 def argv_rename(inpath):
 	#checks first argument from the command line
