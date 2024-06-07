@@ -1,27 +1,17 @@
-import os, shutil, sys
+import os
+import sys
 
-def crawl_dir_get_list(inpath):#recurse subfolders and get all file names
-	filepath_list=[]
-	for (path,dirs,files) in os.walk(inpath):
-		for item in files:
-			filepath=path+os.path.sep+item
-			if filepath not in filepath_list:
-				filepath_list.append(filepath)
-	return sorted(filepath_list)
 
 def rename(inpath):
-    fileList = crawl_dir_get_list(inpath)
-    for item in fileList:
-    	if item.lower().endswith('.jpg'):
-    		itemSplit = item.split()
-    		itemSplitLength = len(itemSplit)
-    		if itemSplitLength > 1:
-    			newName = itemSplit[1]
-    			if not newName.lower().endswith('.jpg'):
-    				newName = newName+'.jpg'
-    			target = inpath+'/'+newName
-    			os.rename(item,target)
-			
+    files = os.listdir(inpath)
+    for f in files:
+        fsplit = f.split()
+        if f.lower().endswith('.jpg') and len(fsplit) > 1:
+            shot = fsplit[1]
+            old_path = os.path.join(inpath, f) 
+            new_path = os.path.join(inpath,shot + '.jpg')
+            os.rename(old_path,new_path)
+            print(f'renamed... {shot}')
 
 def argv_rename(inpath):
 	#checks first argument from the command line
@@ -32,4 +22,13 @@ if __name__ == '__main__':
 	if len(sys.argv)>=2:
 		argv_rename(str(sys.argv[1]))#try to pass first argument to argv_rename
 	else:
+		# Uncomment and change paths to rename from fixed location(s) when no arg is used
+		# argv_rename('/Users/stremland/Desktop/JPEGS')
+		# argv_rename('/Users/streamland/Desktop/JPEGS')
+		
+        # Uncomment to rename from this file directory when no arg is used
+        # abspath = os.path.abspath(__file__)
+        # dirname = os.path.dirname(abspath)
+		# argv_rename(dirname)
+		
 		print("Sample Usage: python justRenameJpegs.py /Users/path/to/jpegs")
